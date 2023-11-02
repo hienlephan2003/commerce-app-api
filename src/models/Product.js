@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 // Define a MongoDB schema for the Product collection
 const ProductSchema = new mongoose.Schema({
   name: { type: String, require: true },

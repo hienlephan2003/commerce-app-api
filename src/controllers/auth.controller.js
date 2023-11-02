@@ -1,7 +1,7 @@
-import Person from '../models/Person';
-import { AES, enc } from 'crypto-js';
-import { sign } from 'jsonwebtoken';
-export async function createPerson(req, res) {
+const Person = require('../models/Person.js');
+const CryptoJs = require('crypto-js');
+const jwt = require('jsonwebtoken');
+async function createPerson(req, res) {
   const newPerson = new Person({
     username: req.body.username,
     password: AES.encrypt(req.body.password, process.env.SECRET).toString(),
@@ -16,7 +16,7 @@ export async function createPerson(req, res) {
     res.status(500).json(err);
   }
 }
-export async function loginPerson(req, res) {
+async function loginPerson(req, res) {
   try {
     const user = await Person.findOne({ username: req.body.username });
     if (!user) {
@@ -45,3 +45,4 @@ export async function loginPerson(req, res) {
     res.status(500).json(e);
   }
 }
+module.exports = { createPerson, loginPerson };

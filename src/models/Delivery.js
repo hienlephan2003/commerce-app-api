@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 // Define a MongoDB schema for the Delivery collection
 const DeliverySchema = new mongoose.Schema({
   type: { type: String, require: true },

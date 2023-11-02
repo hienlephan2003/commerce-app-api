@@ -1,5 +1,5 @@
-import jwt from 'jsonwebtoken';
-import User from '../models/Person';
+const jwt = require('jsonwebtoken');
+const Person = require('../models/Person');
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers.token;
   console.log(authHeader);

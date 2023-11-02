@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 // Define a MongoDB schema for the ReceiverInfomation collection
 const ReceiverInfomationSchema = new mongoose.Schema({
   idCustomer: {

@@ -1,5 +1,5 @@
-import productService from '../services/product.service';
-import Product from '../models/Product';
+const productService = require('../services/product.service.js');
+const Product = require('../models/Product.js');
 module.exports = {
   createProduct: async (req, res) => {
     try {

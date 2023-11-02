@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
-// Define a MongoDB schema for the Discount collection
+const mongoose = require('mongoose');
+s; // Define a MongoDB schema for the Discount collection
 const DiscountSchema = new mongoose.Schema({
   idCustomer: { type: String, required: true },
   code: { type: Date, required: true },

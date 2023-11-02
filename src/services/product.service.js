@@ -1,4 +1,4 @@
-import Product from '../models/Product';
+const Product = require('../models/Product');
 exports.createNewProduct = (product) => {
   return new Promise(async (resolve, reject) => {
     try {
