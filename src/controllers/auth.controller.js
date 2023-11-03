@@ -3,16 +3,20 @@ const CryptoJs = require('crypto-js');
 const jwt = require('jsonwebtoken');
 async function createPerson(req, res) {
   const newPerson = new Person({
-    username: req.body.username,
-    password: AES.encrypt(req.body.password, process.env.SECRET).toString(),
-    role: req.body.role,
+    userName: req.body.userName,
+    password: CryptoJs.AES.encrypt(
+      req.body.password,
+      process.env.SECRET,
+    ).toString(),
+    idRole: req.body.idRole,
   });
 
   try {
     const savePerson = await newPerson.save();
 
-    res.status(201).json(savePerson);
+    res.status(200);
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 }
@@ -24,13 +28,16 @@ async function loginPerson(req, res) {
       return;
     }
 
-    const descryptedPass = AES.decrypt(user.password, process.env.SECRET);
-    const depassword = descryptedPass.toString(enc.Utf8);
+    const descryptedPass = CryptoJs.AES.decrypt(
+      user.password,
+      process.env.SECRET,
+    );
+    const depassword = descryptedPass.toString(CryptoJs.enc.Utf8);
 
     depassword !== req.body.password && res.status(401).json('Wrong password');
     const { password, __v, createdAt, ...others } = user._doc;
 
-    const userToken = sign(
+    const userToken = jwt.sign(
       {
         id: user._id,
         role: user.role,

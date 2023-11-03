@@ -8,14 +8,15 @@
   "devDependencies": {
     "jest": "~29.6",
     "prettier": "~3.0",
-    "rimraf": "~5.0"
+    "rimraf": "~5.0",
+    "supertest": "^6.3.3"
   },
   "scripts": {
     "start": "nodemon  ./src/main.js",
     "clean": "rimraf coverage build tmp",
     "prebuild": "npm run lint",
     "build:release": "npm run clean && tsc -p tsconfig.release.json",
-    "test": "jest --coverage",
+    "test": "jest --coverage --watchAll",
     "prettier": "prettier --config .prettierrc --write .",
     "test:watch": "jest --watch"
   },
@@ -30,6 +31,7 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.1.0",
+    "mongodb-memory-server": "^9.0.1",
     "mongoose": "^7.5.2",
     "mysql": "^2.18.1",
     "nodemon": "^3.0.1",

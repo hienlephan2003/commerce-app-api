@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 const PersonSchema = new mongoose.Schema({
   userName: { type: String, require: true },
   password: { type: String, require: true },
-  name: { type: String, require: true },
-  cmnd_passport: { type: String, require: true },
-  phoneNumber: { type: Number, required: true },
+  name: { type: String },
+  cmnd_passport: { type: String },
+  phoneNumber: { type: Number },
   birthday: Date,
   address: String,
   email: String,
