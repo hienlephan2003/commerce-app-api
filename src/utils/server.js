@@ -4,8 +4,11 @@ const cors = require('cors');
 const authRouter = require('../routes/auth.route');
 const productRouter = require('../routes/product.route');
 const categoryRouter = require('../routes/category.route');
+const dotenv = require('dotenv');
 
 const createApp = () => {
+  dotenv.config();
+
   const app = express();
   app.use(cors({ credentials: true, origin: true }));
   app.use(bodyParser.json());

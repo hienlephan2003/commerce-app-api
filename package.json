@@ -6,6 +6,8 @@
     "node": ">= 18.12 <19"
   },
   "devDependencies": {
+    "@stryker-mutator/core": "^7.3.0",
+    "@stryker-mutator/jest-runner": "^7.3.0",
     "jest": "~29.6",
     "prettier": "~3.0",
     "rimraf": "~5.0",
@@ -18,7 +20,8 @@
     "build:release": "npm run clean && tsc -p tsconfig.release.json",
     "test": "jest --coverage --watchAll",
     "prettier": "prettier --config .prettierrc --write .",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "stryker": "stryker run"
   },
   "author": "Jakub Synowiec <jsynowiec@users.noreply.github.com>",
   "license": "Apache-2.0",
