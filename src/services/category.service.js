@@ -17,7 +17,7 @@ exports.createNewCategory = (category) => {
 exports.updateCategory = (categoryId, category) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const updateCategory = await ShowTime.findByIdAndUpdate(
+      const updateCategory = await Category.findByIdAndUpdate(
         categoryId,
         {
           $set: category,

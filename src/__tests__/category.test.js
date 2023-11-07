@@ -29,11 +29,12 @@ describe('category', () => {
     await mongoose.connection.close();
   });
   describe('get category route', () => {
-    // describe('given the category does not exist', () => {
-    //   it('should return a 500', async () => {
-    //     await supertest(app).get(`/api/category/2`).expect(500);
-    //   });
-    // });
+    describe('given the category does not exist', () => {
+      it('should return a 500', async () => {
+        const categoryId = 'category123';
+        await supertest(app).get(`/api/category/${categoryId}`).expect(500);
+      });
+    });
     describe('given the category does exist', () => {
       it('should return a 200 status and the category', async () => {
         const category = await createNewCategory(categoryPayload);

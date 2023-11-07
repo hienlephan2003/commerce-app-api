@@ -3,8 +3,8 @@ const productController = require('../controllers/product.controler.js');
 const { verifyToken } = require('../middlewares/verifyToken');
 
 router.post('/', verifyToken, productController.createProduct);
-// router.put('/:id', verifyToken, productController.updateProduct);
-// router.delete('/:id', verifyToken, productController.deleteProduct);
+router.post('/:id', verifyToken, productController.updateProduct);
+router.delete('/:id', verifyToken, productController.deleteProduct);
 router.get('/:id', productController.getProduct);
 // router.get('/', productController.getAllProducts);
 

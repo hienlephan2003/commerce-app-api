@@ -14,15 +14,11 @@ exports.createNewProduct = (product) => {
 exports.updateProduct = (productId, product) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const updateProduct = await ShowTime.findByIdAndUpdate(
-        productId,
-        {
-          $set: product,
-        },
-        { new: true },
-      );
-      const { __v, createdAt, updatedAt, ...others } = updateProduct._doc;
-      resolve(others);
+      console.log(productId);
+      console.log(product);
+      await Product.findByIdAndUpdate(productId, product);
+      const updateProduct = await Product.findById(productId);
+      resolve(updateProduct);
     } catch (e) {
       reject(e);
     }
@@ -31,10 +27,7 @@ exports.updateProduct = (productId, product) => {
 exports.getListProduct = () => {
   return new Promise(async (resolve, reject) => {
     try {
-      const allProduct = await Product.find()
-        .limit(10)
-        .sort({ startAt: 1 })
-        .exec();
+      const allProduct = await Product.find().exec();
       resolve(allProduct);
     } catch (e) {
       reject(e);
