@@ -14,12 +14,12 @@ async function createPerson(req, res) {
           : '',
       idRole: req.body.idRole,
     });
-    console.log(newPerson);
+    // console.log(newPerson);
     const savePerson = await newPerson.save();
 
     res.status(200).json('success');
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     res.status(500).json(err);
   }
 }
@@ -53,7 +53,7 @@ async function loginPerson(req, res) {
 
     res.status(200).json({ ...others, userToken });
   } catch (e) {
-    console.log(e);
+    // console.log(e);
     res.status(500).json(e);
   }
 }

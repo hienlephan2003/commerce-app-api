@@ -70,7 +70,7 @@ describe('category', () => {
           .post('/api/category')
           .set('token', `Bear ${token}`)
           .send(categoryPayload);
-        console.log(res.body);
+        //console.log(res.body);
         expect(res.statusCode).toBe(200);
 
         expect(res.body).toEqual({

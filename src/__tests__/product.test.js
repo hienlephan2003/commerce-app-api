@@ -88,7 +88,7 @@ describe('product', () => {
           .post('/api/product')
           .set('token', `Bear ${token}`)
           .send(productPayload);
-        console.log(res.body);
+        //console.log(res.body);
         expect(res.statusCode).toBe(200);
 
         expect(res.body).toEqual({
@@ -128,14 +128,14 @@ describe('product', () => {
           { expiresIn: '21d' },
         );
         const newProduct = await createNewProduct(productPayload);
-        console.log(newProduct);
+        //console.log(newProduct);
         const updateRes = await supertest(app)
           .post(`/api/product/${newProduct._id}`)
           .set('token', `Bear ${token}`)
           .send({
             ...updateProductPayload,
           });
-        console.log(updateRes);
+        //console.log(updateRes);
         expect(updateRes.statusCode).toBe(200);
 
         expect(updateRes._body).toEqual({
@@ -172,7 +172,7 @@ describe('product', () => {
           .post('/api/product')
           .set('token', `Bear ${token}`)
           .send(productPayload);
-        console.log(res.body);
+        //console.log(res.body);
         expect(res.statusCode).toBe(200);
 
         const deleteRes = await supertest(app)
