@@ -5,20 +5,11 @@ const mongoose = require('mongoose');
 const app = createApp();
 const Person = require('../models/Person.js');
 const CryptoJs = require('crypto-js');
-
-const userId = '6544fd3b6b2595b15c611e73';
-const secrect = 'commerapp';
-module.exports = userPayload = {
-  _id: userId,
-  email: 'jane.doe@example.com',
-  name: 'Jane Doe',
-  role: 1,
-};
-const authValidPayload = {
-  userName: 'phanhien2003',
-  password: 'hien2003',
-  idRole: 1,
-};
+const {
+  userPayload,
+  userId,
+  authValidPayload,
+} = require('../testUtils/auth.testUtils.js');
 describe('auth', () => {
   beforeAll(async () => {
     const mongoServer = await MongoMemoryServer.create();

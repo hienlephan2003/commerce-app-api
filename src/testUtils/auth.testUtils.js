@@ -26,6 +26,23 @@ const token = jwt.sign(
   process.env.JWT_SEC,
   { expiresIn: '21d' },
 );
+const createToken = (userId, idRole) => {
+  const token = jwt.sign(
+    {
+      id: userId,
+      role: idRole,
+    },
+    process.env.JWT_SEC,
+    { expiresIn: '21d' },
+  );
+  return token;
+};
+const authValidPayload = {
+  userName: 'phanhien2003',
+  password: 'hien2003',
+  idRole: 1,
+};
+
 const adminToken = jwt.sign(
   {
     id: userPayload._id,
@@ -50,4 +67,6 @@ module.exports = {
   adminToken,
   staffToken,
   updateProductPayload,
+  authValidPayload,
+  createToken,
 };

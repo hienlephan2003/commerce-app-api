@@ -7,8 +7,8 @@ const app = createApp();
 const {
   categoryPayload,
   updateCategoryPayload,
-} = require('../seeds/category.seed');
-const { token, adminToken } = require('../seeds/auth.seed');
+} = require('../testUtils/category.testUtils');
+const { token, adminToken } = require('../testUtils/auth.testUtils');
 describe('category', () => {
   beforeAll(async () => {
     const mongoServer = await MongoMemoryServer.create();

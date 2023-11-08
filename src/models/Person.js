@@ -4,7 +4,7 @@ const PersonSchema = new mongoose.Schema({
   password: { type: String, required: true },
   name: { type: String },
   cmnd_passport: { type: String },
-  phoneNumber: { type: Number },
+  phoneNumber: { type: String },
   birthday: Date,
   address: String,
   email: String,

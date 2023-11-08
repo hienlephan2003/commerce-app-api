@@ -5,6 +5,7 @@ const authRouter = require('../routes/auth.route');
 const productRouter = require('../routes/product.route');
 const categoryRouter = require('../routes/category.route');
 const discountRouter = require('../routes/discount.route');
+const userRouter = require('../routes/user.route');
 const dotenv = require('dotenv');
 
 const createApp = () => {
@@ -17,6 +18,7 @@ const createApp = () => {
   app.use('/api/product', productRouter);
   app.use('/api/category', categoryRouter);
   app.use('/api/discount', discountRouter);
+  app.use('/api/user', userRouter);
   return app;
 };
 

@@ -11,8 +11,8 @@ const {
   updateProductPayload,
   token,
   adminToken,
-} = require('../seeds/auth.seed');
-const { productPayload } = require('../seeds/product.seed');
+} = require('../testUtils/auth.testUtils');
+const { productPayload } = require('../testUtils/product.testUtils');
 describe('product', () => {
   beforeAll(async () => {
     const mongoServer = await MongoMemoryServer.create();

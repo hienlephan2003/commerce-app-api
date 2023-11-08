@@ -1,26 +1,15 @@
 const Person = require('../models/Person.js');
 const CryptoJs = require('crypto-js');
 const jwt = require('jsonwebtoken');
+const { createNewPerson } = require('../services/auth.service.js');
 async function createPerson(req, res) {
   try {
-    const newPerson = new Person({
-      userName: req.body.userName,
-      password:
-        req.body.password != null
-          ? CryptoJs.AES.encrypt(
-              req.body.password,
-              process.env.SECRET,
-            ).toString()
-          : '',
-      idRole: req.body.idRole,
-    });
-    // console.log(newPerson);
-    const savePerson = await newPerson.save();
-
-    res.status(200).json('success');
+    const person = await createNewPerson(req.body);
+    delete person.password;
+    res.status(200).json(person);
   } catch (err) {
     // console.log(err);
-    res.status(500).json(err);
+    res.status(500).json(err.message);
   }
 }
 async function loginPerson(req, res) {
