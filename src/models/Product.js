@@ -24,6 +24,11 @@ const ProductSchema = new mongoose.Schema({
     },
   ],
 });
+ProductSchema.methods.toJSON = function () {
+  var obj = this.toObject();
+  delete obj.__v;
+  return obj;
+};
 
 const Product = mongoose.model('Product', ProductSchema);
 

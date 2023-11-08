@@ -4,21 +4,11 @@ const { MongoMemoryServer } = require('mongodb-memory-server');
 const { createNewCategory } = require('../services/category.service');
 const mongoose = require('mongoose');
 const app = createApp();
-const jwt = require('jsonwebtoken');
-const secrect = 'commerapp';
-
-const userId = new mongoose.Types.ObjectId().toString();
-module.exports = userPayload = {
-  _id: userId,
-  email: 'jane.doe@example.com',
-  name: 'Jane Doe',
-  role: 1,
-};
-``;
-module.exports = categoryPayload = {
-  type: 'Laptop',
-};
-
+const {
+  categoryPayload,
+  updateCategoryPayload,
+} = require('../seeds/category.seed');
+const { token, adminToken } = require('../seeds/auth.seed');
 describe('category', () => {
   beforeAll(async () => {
     const mongoServer = await MongoMemoryServer.create();
@@ -58,17 +48,9 @@ describe('category', () => {
 
     describe('given the user is logged in', () => {
       it('should return a 200 and create the category', async () => {
-        const token = jwt.sign(
-          {
-            id: userPayload._id,
-            role: userPayload.role,
-          },
-          secrect,
-          { expiresIn: '21d' },
-        );
         const res = await supertest(app)
           .post('/api/category')
-          .set('token', `Bear ${token}`)
+          .set('token', `Bear ${adminToken}`)
           .send(categoryPayload);
         //console.log(res.body);
         expect(res.statusCode).toBe(200);
@@ -78,6 +60,48 @@ describe('category', () => {
           type: 'Laptop',
         });
       });
+    });
+  });
+  describe('update category route', () => {
+    describe('given the user is not logged in', () => {
+      it('should return a 403', async () => {
+        const newCategory = await createNewCategory(categoryPayload);
+        const { statusCode } = await supertest(app)
+          .put(`/api/category/${newCategory._id}`)
+          .send(updateCategoryPayload);
+
+        expect(statusCode).toBe(401);
+      });
+    });
+
+    describe('given the user is logged in', () => {
+      it('should return a 200 and update the category', async () => {
+        const newCategory = await createNewCategory(categoryPayload);
+        const { body, statusCode } = await supertest(app)
+          .put(`/api/category/${newCategory._id}`)
+          .set('token', `Bearer ${adminToken}`)
+          .send(updateCategoryPayload);
+
+        expect(statusCode).toBe(200);
+
+        expect(body).toEqual({
+          _id: expect.any(String),
+          type: updateCategoryPayload.type,
+          __v: expect.any(Number),
+        });
+      });
+    });
+  });
+
+  describe('get all categories route', () => {
+    it('should return a 200 and an array of categories ', async () => {
+      await createNewCategory(categoryPayload);
+      await createNewCategory(categoryPayload);
+
+      const { body, statusCode } = await supertest(app).get(`/api/category/`);
+
+      expect(statusCode).toBe(200);
+      expect(body).toEqual(expect.any(Array));
     });
   });
 });

@@ -17,15 +17,9 @@ exports.createNewCategory = (category) => {
 exports.updateCategory = (categoryId, category) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const updateCategory = await Category.findByIdAndUpdate(
-        categoryId,
-        {
-          $set: category,
-        },
-        { new: true },
-      );
-      const { __v, createdAt, updatedAt, ...others } = updateCategory._doc;
-      resolve(others);
+      await Category.findByIdAndUpdate(categoryId, category);
+      const updateCategory = await Category.findById(categoryId);
+      resolve(updateCategory);
     } catch (e) {
       reject(e);
     }
@@ -34,10 +28,7 @@ exports.updateCategory = (categoryId, category) => {
 exports.getListCategory = () => {
   return new Promise(async (resolve, reject) => {
     try {
-      const allCategory = await Category.find()
-        .limit(10)
-        .sort({ startAt: 1 })
-        .exec();
+      const allCategory = await Category.find();
       resolve(allCategory);
     } catch (e) {
       reject(e);

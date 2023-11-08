@@ -17,5 +17,6 @@ const config = {
   coverageAnalysis: 'perTest',
   disableTypeChecks: 'false',
   tempDirName: 'strykerTmp',
+  ignoreStatic: true,
 };
 export default config;

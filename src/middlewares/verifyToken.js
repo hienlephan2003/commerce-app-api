@@ -18,7 +18,7 @@ const verifyToken = (req, res, next) => {
 
 const verifyAndAdmin = (req, res, next) => {
   verifyToken(req, res, () => {
-    if (req.person.role == 'ADMIN') {
+    if (req.person.role == 3) {
       next();
     } else {
       res.status(403).json('You are restricted from performing this operation');

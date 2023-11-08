@@ -4,39 +4,15 @@ const { MongoMemoryServer } = require('mongodb-memory-server');
 const { createNewProduct } = require('../services/product.service');
 const mongoose = require('mongoose');
 const app = createApp();
-const jwt = require('jsonwebtoken');
 
-const userId = '6544fd3b6b2595b15c611e73';
 const productId = new mongoose.Types.ObjectId().toString();
-const secrect = 'commerapp';
-module.exports = userPayload = {
-  _id: userId,
-  email: 'jane.doe@example.com',
-  name: 'Jane Doe',
-  role: 1,
-};
-``;
-module.exports = productPayload = {
-  name: 'test',
-  nameOfManufacturer: 'HP',
-  descriptionInformation: 'Laptop mới 100%',
-  technicalInformation: 'Ram 38G',
-  price: 38000000,
-  status: 1,
-  idCategory: '654501183e937734f982c3a4',
-  thumbnailimage:
-    'https://product.hstatic.net/200000722513/product/8u6l9pa_6f2f6ba3187e4ad599dc021d3f41b307.png',
-};
-const updateProductPayload = {
-  name: 'test2',
-  nameOfManufacturer: 'H2P',
-  descriptionInformation: 'Laptop mới 1020%',
-  technicalInformation: 'Ram 238G',
-  price: 380000200,
-  status: 2,
-  thumbnailimage:
-    'https://product.hstat2ic.net/200000722513/product/8u6l9pa_6f2f6ba3187e4ad599dc021d3f41b307.png',
-};
+const {
+  userPayload,
+  updateProductPayload,
+  token,
+  adminToken,
+} = require('../seeds/auth.seed');
+const { productPayload } = require('../seeds/product.seed');
 describe('product', () => {
   beforeAll(async () => {
     const mongoServer = await MongoMemoryServer.create();
@@ -76,14 +52,6 @@ describe('product', () => {
 
     describe('given the user is logged in', () => {
       it('should return a 200 and create the product', async () => {
-        const token = jwt.sign(
-          {
-            id: userPayload._id,
-            role: userPayload.role,
-          },
-          secrect,
-          { expiresIn: '21d' },
-        );
         const res = await supertest(app)
           .post('/api/product')
           .set('token', `Bear ${token}`)
@@ -93,16 +61,8 @@ describe('product', () => {
 
         expect(res.body).toEqual({
           _id: expect.any(String),
-          descriptionInformation: 'Laptop mới 100%',
-          idCategory: '654501183e937734f982c3a4',
-          name: 'test',
-          nameOfManufacturer: 'HP',
-          price: 38000000,
           rates: expect.any(Array),
-          status: 1,
-          technicalInformation: 'Ram 38G',
-          thumbnailimage:
-            'https://product.hstatic.net/200000722513/product/8u6l9pa_6f2f6ba3187e4ad599dc021d3f41b307.png',
+          ...productPayload,
         });
       });
     });
@@ -119,14 +79,6 @@ describe('product', () => {
 
     describe('given the user is logged in', () => {
       it('should return a 200 and update the product', async () => {
-        const token = jwt.sign(
-          {
-            id: userPayload._id,
-            role: userPayload.role,
-          },
-          secrect,
-          { expiresIn: '21d' },
-        );
         const newProduct = await createNewProduct(productPayload);
         //console.log(newProduct);
         const updateRes = await supertest(app)
@@ -140,7 +92,7 @@ describe('product', () => {
 
         expect(updateRes._body).toEqual({
           ...updateProductPayload,
-          __v: expect.any(Number),
+          // __v: expect.any(Number),
           _id: expect.any(String),
           idCategory: expect.any(String),
           rates: expect.any(Array),
@@ -160,14 +112,6 @@ describe('product', () => {
 
     describe('given the user is logged in', () => {
       it('should return a 200 and delete the product', async () => {
-        const token = jwt.sign(
-          {
-            id: userPayload._id,
-            role: userPayload.role,
-          },
-          secrect,
-          { expiresIn: '21d' },
-        );
         const res = await supertest(app)
           .post('/api/product')
           .set('token', `Bear ${token}`)
@@ -180,6 +124,17 @@ describe('product', () => {
           .set('token', `Bear ${token}`);
         expect(deleteRes.statusCode).toBe(200);
       });
+    });
+  });
+  describe('get all products route', () => {
+    it('should return a 200 and an array of products ', async () => {
+      await createNewProduct(productPayload);
+      await createNewProduct(productPayload);
+
+      const { body, statusCode } = await supertest(app).get(`/api/product/`);
+
+      expect(statusCode).toBe(200);
+      expect(body).toEqual(expect.any(Array));
     });
   });
 });
