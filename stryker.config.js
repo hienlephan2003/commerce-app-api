@@ -5,7 +5,7 @@ const config = {
     "This config was generated using 'stryker init'. Please take a look at: https://stryker-mutator.io/docs/stryker-js/configuration/ for more information.",
   packageManager: 'npm',
   reporters: ['html', 'clear-text', 'progress'],
-  // mutate: ['controller/**/*.js'],
+  mutate: ['src/**/*.js'],
   testRunner: 'jest',
   testRunner_comment:
     "Take a look at (missing 'homepage' URL in package.json) for information about the jest plugin.",

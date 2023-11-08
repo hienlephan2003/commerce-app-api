@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "Minimalistic boilerplate to quick-start Node.js development in TypeScript.",
   "engines": {
-    "node": ">= 18.12 <19"
+    "node": ">= 18.12"
   },
   "devDependencies": {
     "@stryker-mutator/core": "^7.3.0",
@@ -18,7 +18,7 @@
     "clean": "rimraf coverage build tmp",
     "prebuild": "npm run lint",
     "build:release": "npm run clean && tsc -p tsconfig.release.json",
-    "test": "jest --coverage --watchAll",
+    "test": "jest --coverage --watchAll --config=jest.config.js",
     "prettier": "prettier --config .prettierrc --write .",
     "test:watch": "jest --watch",
     "stryker": "stryker run"

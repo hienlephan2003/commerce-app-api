@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
-s; // Define a MongoDB schema for the Discount collection
+// Define a MongoDB schema for the Discount collection
 const DiscountSchema = new mongoose.Schema({
   idCustomer: { type: String, required: true },
   code: { type: Date, required: true },
   value: { type: Number, required: true },
   exp_time: { type: Date, required: true },
-  status: String,
+  status: { type: String, required: true },
   isExpire: {
     type: String,
     enum: ['Expired', 'Unexpired'],
