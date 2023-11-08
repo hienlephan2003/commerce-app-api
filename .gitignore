@@ -31,4 +31,4 @@ build/
 .env
 
 # stryker temp files
-.strykerTmp
+strykerTmp
