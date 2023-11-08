@@ -13,12 +13,12 @@ module.exports = discountPayload = {
   exp_time: new Date().getDate() + 2,
   status: '',
 };
+
 const token = jwt.sign(
   {
-    id: userPayload._id,
-    role: userPayload.role,
+    id: this.idCustomer,
   },
-  secrect,
+  process.env.SECRET,
   { expiresIn: '21d' },
 );
 
@@ -35,8 +35,8 @@ describe('discount', () => {
     describe('Discounts are found', () => {
       it('Should return 200 status code and the discounts', async () => {
         await supertest(app)
-          .set('token', `Bear ${token}`)
           .get('/api/discount')
+          .set('token', `Bear ${token}`)
           .expect(200);
       });
     });
