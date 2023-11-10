@@ -36,12 +36,13 @@ describe('order', () => {
   });
   describe('create order route', () => {
     describe('given the user is not logged in', () => {
-      it('should return a 403', async () => {
-        const { statusCode } = await supertest(app)
+      it('should return a 401', async () => {
+        const { statusCode, body } = await supertest(app)
           .post('/api/order')
           .send(newOrderPayload);
 
         expect(statusCode).toBe(401);
+        expect(body).toEqual('You are not authenticated');
       });
     });
 
@@ -84,10 +85,11 @@ describe('order', () => {
   describe('canceled order route', () => {
     describe('given the user is not logged in', () => {
       it('should return a 401', async () => {
-        const { statusCode } = await supertest(app).post(
+        const { statusCode, body } = await supertest(app).post(
           `/api/order/canceled/${orderId}`,
         );
         expect(statusCode).toBe(401);
+        expect(body).toEqual('You are not authenticated');
       });
       describe('given the user is logged in', () => {
         it('should return a 200 and canceled the order', async () => {
@@ -104,6 +106,15 @@ describe('order', () => {
     });
   });
   describe('get order by user id', () => {
+    describe('given the user is not logged in', () => {
+      it('should return a 401', async () => {
+        const { body, statusCode } = await supertest(app).get(`/api/order/`);
+
+        expect(statusCode).toBe(401);
+        expect(body).toEqual('You are not authenticated');
+      });
+    });
+
     it('should return a 200 and an array of orders ', async () => {
       const { body, statusCode } = await supertest(app)
         .get(`/api/order/`)
@@ -111,17 +122,34 @@ describe('order', () => {
 
       expect(statusCode).toBe(200);
       expect(body).toEqual(expect.any(Array));
+      body.forEach((order) => {
+        expect(order.customerId).toEqual(userId);
+      });
     });
   });
 
   describe('get all orders route', () => {
-    it('should return a 200 and an array of orders ', async () => {
-      const { body, statusCode } = await supertest(app)
-        .get(`/api/order/all`)
-        .set('token', `Bearer ${adminToken}`);
+    describe('given the user is not admin', () => {
+      it('should return a 403', async () => {
+        const { body, statusCode } = await supertest(app)
+          .get(`/api/order/all`)
+          .set('token', `Bear ${token}`);
+        expect(statusCode).toBe(403);
+        expect(body).toEqual(
+          'You are restricted from performing this operation',
+        );
+      });
+    });
 
-      expect(statusCode).toBe(200);
-      expect(body).toEqual(expect.any(Array));
+    describe('given the user is admin', () => {
+      it('should return a 200 and an array of orders ', async () => {
+        const { body, statusCode } = await supertest(app)
+          .get(`/api/order/all`)
+          .set('token', `Bearer ${adminToken}`);
+
+        expect(statusCode).toBe(200);
+        expect(body).toEqual(expect.any(Array));
+      });
     });
   });
 });

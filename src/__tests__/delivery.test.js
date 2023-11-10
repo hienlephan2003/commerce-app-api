@@ -28,17 +28,21 @@ describe('delivery', () => {
   describe('create delivery route', () => {
     describe('given the user is not logged in', () => {
       it('should return a 401', async () => {
-        const { statusCode } = await supertest(app).post('/api/delivery');
+        const { statusCode, body } = await supertest(app).post('/api/delivery');
 
         expect(statusCode).toBe(401);
+        expect(body).toEqual('You are not authenticated');
       });
     });
     describe('given the user is not admin', () => {
       it('should return a 403', async () => {
-        const { statusCode } = await supertest(app)
+        const { statusCode, body } = await supertest(app)
           .post('/api/delivery')
           .set('token', `Bear ${token}`);
         expect(statusCode).toBe(403);
+        expect(body).toEqual(
+          'You are restricted from performing this operation',
+        );
       });
     });
 
@@ -55,12 +59,28 @@ describe('delivery', () => {
   });
 
   describe('get delivery route', () => {
-    describe('given the delivery does not exist', () => {
-      it('should return 500 status code', async () => {
+    describe('given the user is not logged in', () => {
+      it('should return a 401', async () => {
         const deliveryId = 'delivery-123';
-        await supertest(app).get(`/api/delivery/${deliveryId}`).expect(401);
+        const { statusCode, body } = await supertest(app).get(
+          `/api/delivery/${deliveryId}`,
+        );
+        expect(statusCode).toBe(401);
+        expect(body).toEqual('You are not authenticated');
       });
     });
+    describe('given the delivery does not exist', () => {
+      it('should return 404 status code', async () => {
+        const deliveryId = new mongoose.Types.ObjectId().toString();
+        const { body, statusCode } = await supertest(app)
+          .get(`/api/delivery/${deliveryId}`)
+          .set('token', `Bear ${token}`);
+
+        expect(statusCode).toBe(404);
+        expect(body).toEqual('Delivery not found');
+      });
+    });
+
     describe('given the delivery does exist', () => {
       it('should return a 200 status and the delivery', async () => {
         const delivery = await createNewDelivery(deliveryPayload);
@@ -75,20 +95,24 @@ describe('delivery', () => {
   describe('change delivery status route', () => {
     describe('given the user is not logged in', () => {
       it('should return a 401', async () => {
-        const { statusCode } = await supertest(app).put(
+        const { statusCode, body } = await supertest(app).put(
           `/api/delivery/${deliveryId}`,
         );
         expect(statusCode).toBe(401);
+        expect(body).toEqual('You are not authenticated');
       });
     });
     describe('given the user is not admin', () => {
       it('should return a 403', async () => {
         const deliveryId = 'delivery-123';
 
-        const { statusCode } = await supertest(app)
+        const { statusCode, body } = await supertest(app)
           .put(`/api/delivery/${deliveryId}`)
           .set('token', `Bear ${token}`);
         expect(statusCode).toBe(403);
+        expect(body).toEqual(
+          'You are restricted from performing this operation',
+        );
       });
     });
 

@@ -15,7 +15,7 @@ module.exports = {
     try {
       const delivery = await Delivery.findById(req.params.id);
       if (!delivery) {
-        return res.status(404).json('delivery not found');
+        return res.status(404).json('Delivery not found');
       } else return res.status(200).json(delivery);
     } catch (err) {
       return res.status(500).json(err);

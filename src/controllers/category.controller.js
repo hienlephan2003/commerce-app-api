@@ -1,5 +1,6 @@
 const categoryService = require('../services/category.service.js');
 const Category = require('../models/Category.js');
+const Product = require('../models/Product.js');
 module.exports = {
   createCategory: async (req, res) => {
     try {
@@ -27,6 +28,7 @@ module.exports = {
   },
   deleteCategory: async (req, res) => {
     try {
+      await Product.deleteMany({ idCategory: req.params.id });
       await Category.findByIdAndDelete(req.params.id);
       res.status(200).json('Category successfully deleted');
     } catch (err) {
@@ -37,11 +39,11 @@ module.exports = {
     try {
       const category = await Category.findById(req.params.id);
       if (!category) {
-        res.status(404).json('category not found');
+        res.status(404).json('Category not found');
         return;
-      } else res.status(200).json(category);
+      } else return res.status(200).json(category);
     } catch (err) {
-      res.status(500).json('Hehe');
+      res.status(500).json(err);
     }
   },
   getAllCategorys: async (req, res) => {

@@ -24,9 +24,13 @@ describe('product', () => {
   });
   describe('get product route', () => {
     describe('given the product does not exist', () => {
-      it('should return 500 status code', async () => {
-        const productId = 'product-123';
-        await supertest(app).get(`/api/product/${productId}`).expect(500);
+      it('should return 404 status code', async () => {
+        const productId = new mongoose.Types.ObjectId().toString();
+        const { body, statusCode } = await supertest(app).get(
+          `/api/product/${productId}`,
+        );
+        expect(statusCode).toBe(404);
+        expect(body).toEqual('Product not found');
       });
     });
     describe('given the product does exist', () => {
@@ -38,15 +42,17 @@ describe('product', () => {
         );
 
         expect(statusCode).toBe(200);
+        expect(body.name).toEqual(product.name);
       });
     });
   });
   describe('create product route', () => {
     describe('given the user is not logged in', () => {
-      it('should return a 403', async () => {
-        const { statusCode } = await supertest(app).post('/api/product');
+      it('should return a 401', async () => {
+        const { statusCode, body } = await supertest(app).post('/api/product');
 
         expect(statusCode).toBe(401);
+        expect(body).toEqual('You are not authenticated');
       });
     });
 
@@ -70,10 +76,11 @@ describe('product', () => {
   describe('update product route', () => {
     describe('given the user is not logged in', () => {
       it('should return a 401', async () => {
-        const { statusCode } = await supertest(app).post(
+        const { statusCode, body } = await supertest(app).post(
           `/api/product/${productId}`,
         );
         expect(statusCode).toBe(401);
+        expect(body).toEqual('You are not authenticated');
       });
     });
 
@@ -103,10 +110,11 @@ describe('product', () => {
   describe('delete product route', () => {
     describe('given the user is not logged in', () => {
       it('should return a 401', async () => {
-        const { statusCode } = await supertest(app).delete(
+        const { statusCode, body } = await supertest(app).delete(
           `/api/product/${productId}`,
         );
         expect(statusCode).toBe(401);
+        expect(body).toEqual('You are not authenticated');
       });
     });
 

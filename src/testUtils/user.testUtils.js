@@ -12,5 +12,19 @@ const validEditUserPayload = {
   gender: true,
   idCart: '123',
 };
-
-module.exports = { validEditUserPayload };
+const receiverInfomation = {
+  name: 'Lấy đồ dùm Phan Hiển',
+  address: 'Ấp Tân Ngãi, xã Tân Trung, Mỏ Cày Nam, Bến Tre ',
+  phoneNumber: '03030303',
+  notice: 'Nhà gần cột điện ',
+};
+const invalidReceiverInfomation = {
+  name: 'Lấy đồ dùm Phan Hiển',
+  address: 'Ấp Tân Ngãi, xã Tân Trung, Mỏ Cày Nam, Bến Tre ',
+  notice: 'Nhà gần cột điện ',
+};
+module.exports = {
+  validEditUserPayload,
+  receiverInfomation,
+  invalidReceiverInfomation,
+};

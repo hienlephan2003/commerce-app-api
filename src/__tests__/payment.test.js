@@ -6,7 +6,6 @@ const mongoose = require('mongoose');
 const app = createApp();
 
 const paymentId = new mongoose.Types.ObjectId().toString();
-const { token } = require('../testUtils/auth.testUtils');
 const { paymentTransactionPayload } = require('../testUtils/payment.testUtils');
 const { orderPayload } = require('../testUtils/order.testUtils');
 const { productPayload } = require('../testUtils/product.testUtils');
@@ -55,6 +54,14 @@ describe('payment', () => {
           .send({ orderId: newOrder._id });
         expect(res.statusCode).toBe(200);
         expect(res.body.status).toEqual('Success');
+      });
+      it('should return a 500', async () => {
+        const res = await supertest(app)
+          .post('/api/payment')
+          .set('token', `Bear ${token}`)
+          .send({});
+        expect(res.statusCode).toBe(500);
+        expect(res.body).not.toBeNaN();
       });
     });
   });

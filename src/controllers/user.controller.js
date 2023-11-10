@@ -5,6 +5,7 @@ const CryptoJs = require('crypto-js');
 module.exports = {
   updatePerson: async (req, res) => {
     try {
+      console.log(req.body);
       if (req.body.password) {
         req.body.password = CryptoJs.AES.encrypt(
           req.body.password,
@@ -16,6 +17,9 @@ module.exports = {
         delete req.body.cmnd_passport;
       }
       if (req.body.idRole) delete req.body.idRole;
+      if (Object.keys(req.body).length === 0) {
+        throw new Error('Nothing to update');
+      }
       const UpdatePerson = await Person.findByIdAndUpdate(req.person.id, {
         $set: req.body,
       });
@@ -23,8 +27,7 @@ module.exports = {
 
       res.status(200).json(others);
     } catch (err) {
-      console.log(err.message);
-      res.status(500).json({ message: err.message });
+      res.status(500).json(err);
     }
   },
   // banPerson: async (req, res) => {
@@ -45,12 +48,8 @@ module.exports = {
     }
   },
   getAllPersons: async (req, res) => {
-    try {
-      const allPerson = await Person.find();
-      res.status(200).json(allPerson);
-    } catch (err) {
-      res.status(500).json(err.message);
-    }
+    const allPerson = await Person.find();
+    res.status(200).json(allPerson);
   },
   addReceiverInformation: async (req, res) => {
     try {
@@ -62,7 +61,8 @@ module.exports = {
         notice: req.body.notice,
       };
       const newReceiver = new ReceiverInfomation(receiverPayload);
-      res.status(200).json(newReceiver);
+      const newdoc = await newReceiver.save();
+      res.status(200).json(newdoc);
     } catch (err) {
       res.status(500).json(err);
     }

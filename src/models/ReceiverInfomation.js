@@ -6,10 +6,13 @@ const ReceiverInfomationSchema = new mongoose.Schema({
     ref: 'Person',
     required: true,
   },
-  name: { type: String, require: true },
-  address: { type: String, require: true },
-  phoneNumber: { type: Number, required: true },
-  notice: { type: String, require: false },
+  name: { type: String, required: true },
+  address: { type: String, required: true },
+  phoneNumber: {
+    type: String,
+    required: true,
+  },
+  notice: { type: String, required: false },
 });
 
 const ReceiverInfomation = mongoose.model(
