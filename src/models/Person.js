@@ -12,6 +12,13 @@ const PersonSchema = new mongoose.Schema({
   idRole: Number,
   gender: String,
   idCart: Number,
+  paymentCard: [
+    {
+      cardNumber: { type: String, required: true },
+      expDate: { type: Date, required: true },
+      ownName: { type: String, required: true },
+    },
+  ],
 });
 
 const Person = mongoose.model('Person', PersonSchema);

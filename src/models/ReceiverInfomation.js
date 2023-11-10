@@ -9,7 +9,7 @@ const ReceiverInfomationSchema = new mongoose.Schema({
   name: { type: String, require: true },
   address: { type: String, require: true },
   phoneNumber: { type: Number, required: true },
-  Note: { type: String, require: false },
+  notice: { type: String, require: false },
 });
 
 const ReceiverInfomation = mongoose.model(

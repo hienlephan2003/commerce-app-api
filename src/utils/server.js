@@ -5,6 +5,9 @@ const authRouter = require('../routes/auth.route');
 const productRouter = require('../routes/product.route');
 const categoryRouter = require('../routes/category.route');
 const discountRouter = require('../routes/discount.route');
+const orderRouter = require('../routes/order.route');
+const deliveryRouter = require('../routes/delivery.route');
+const paymentRouter = require('../routes/payment.route');
 const userRouter = require('../routes/user.route');
 const dotenv = require('dotenv');
 
@@ -19,6 +22,10 @@ const createApp = () => {
   app.use('/api/category', categoryRouter);
   app.use('/api/discount', discountRouter);
   app.use('/api/user', userRouter);
+  app.use('/api/order', orderRouter);
+  app.use('/api/payment', paymentRouter);
+  app.use('/api/delivery', deliveryRouter);
+
   return app;
 };
 

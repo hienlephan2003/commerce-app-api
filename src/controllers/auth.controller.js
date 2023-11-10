@@ -8,13 +8,13 @@ async function createPerson(req, res) {
     delete person.password;
     res.status(200).json(person);
   } catch (err) {
-    // console.log(err);
-    res.status(500).json(err.message);
+    console.log(err);
+    res.status(500).json(err);
   }
 }
 async function loginPerson(req, res) {
   try {
-    const user = await Person.findOne({ username: req.body.username });
+    const user = await Person.findOne({ userName: req.body.userName });
     if (!user) {
       res.status(401).json('Wrong Login Details');
       return;
@@ -34,7 +34,7 @@ async function loginPerson(req, res) {
     const userToken = jwt.sign(
       {
         id: user._id,
-        role: user.role,
+        role: user.idRole,
       },
       process.env.SECRET,
       { expiresIn: '21d' },
