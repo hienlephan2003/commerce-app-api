@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 
 const userId = new mongoose.Types.ObjectId().toString();
 const userPayload = {
-  _id: new mongoose.Types.ObjectId().toString(),
+  _id: userId,
   email: 'jane.doe@example.com',
   name: 'Jane Doe',
   role: 1,

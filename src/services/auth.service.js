@@ -6,6 +6,10 @@ module.exports = {
   createNewPerson: (user) => {
     return new Promise(async (resolve, reject) => {
       try {
+        const findUser = await Person.findOne({ userName: user.userName });
+        if (findUser) {
+          reject('Username is exists');
+        }
         const newPerson = new Person({
           userName: user.userName,
           password:

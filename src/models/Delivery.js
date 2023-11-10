@@ -1,9 +1,22 @@
 const mongoose = require('mongoose');
-// Define a MongoDB schema for the Delivery collection
+
 const DeliverySchema = new mongoose.Schema({
-  type: { type: String, require: true },
-  time: { type: Date, require: true },
-  const: { type: Number, require: true },
+  orderId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Order',
+    required: true,
+  },
+  deliveryDate: { type: Date, required: true },
+  receiverInfomationId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'ReceiverInfomation',
+    required: true,
+  },
+  status: {
+    type: String,
+    enum: ['Processing', 'Shipping', 'Delivered', 'Failed'],
+    default: 'Processing',
+  },
 });
 
 const Delivery = mongoose.model('Delivery', DeliverySchema);

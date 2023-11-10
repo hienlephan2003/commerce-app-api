@@ -1,4 +1,5 @@
 const Person = require('../models/Person');
+const ReceiverInfomation = require('../models/ReceiverInfomation');
 const CryptoJs = require('crypto-js');
 
 module.exports = {
@@ -49,6 +50,21 @@ module.exports = {
       res.status(200).json(allPerson);
     } catch (err) {
       res.status(500).json(err.message);
+    }
+  },
+  addReceiverInformation: async (req, res) => {
+    try {
+      const receiverPayload = {
+        idCustomer: req.person.id,
+        name: req.body.name,
+        address: req.body.address,
+        phoneNumber: req.body.phoneNumber,
+        notice: req.body.notice,
+      };
+      const newReceiver = new ReceiverInfomation(receiverPayload);
+      res.status(200).json(newReceiver);
+    } catch (err) {
+      res.status(500).json(err);
     }
   },
 };
