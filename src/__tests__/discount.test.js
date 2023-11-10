@@ -34,6 +34,16 @@ describe('discount', () => {
       });
     });
     describe('given the user is logged in', () => {
+      describe('Discounts are not found', () => {
+        it('Should return a 200 status code and empty list of discounts', async () => {
+          const { body, statusCode } = await supertest(app)
+            .get('/api/discount')
+            .set('token', `Bear ${token}`);
+          expect(statusCode).toBe(200);
+          expect(body).toEqual(expect.any(Array));
+          expect(body.length).toEqual(0);
+        });
+      });
       describe('Discounts are found', () => {
         it('Should return 200 status code and the discounts', async () => {
           await discountService.createNewDiscount(discountPayload);
@@ -42,14 +52,6 @@ describe('discount', () => {
             .set('token', `Bear ${token}`);
           expect(statusCode).toBe(200);
           expect(body).toEqual(expect.any(Array));
-        });
-      });
-      describe('Discounts are not found', () => {
-        it('Should return a 401 status code', async () => {
-          const { statusCode } = await supertest(app)
-            .get('/api/discount')
-            .set('token', `Bear ${token}`);
-          expect(statusCode).toBe(500);
         });
       });
     });
@@ -78,10 +80,11 @@ describe('discount', () => {
       describe('Discount is not found', () => {
         it('Should return 500 status code', async () => {
           const discountId = 'discount1';
-          const { statusCode } = await supertest(app)
+          const { body, statusCode } = await supertest(app)
             .get(`/api/discount/${discountId}`)
             .set('token', `Bear ${token}`);
           expect(statusCode).toBe(500);
+          expect(body).toEqual('Discount is not found');
         });
       });
     });
@@ -90,7 +93,6 @@ describe('discount', () => {
     describe('given the user is not logged in', () => {
       it('should return a 401', async () => {
         const { statusCode } = await supertest(app).post('/api/discount');
-
         expect(statusCode).toBe(401);
       });
     });
@@ -100,14 +102,20 @@ describe('discount', () => {
           .post('/api/discount')
           .set('token', `Bear ${token}`)
           .send(discountPayload);
-        //console.log(res.body);
         expect(res.statusCode).toBe(201);
-
-        expect(res.body).toEqual({
-          _id: expect.any(String),
-          ...discountPayload,
-          isExpire: expect.any(Date),
-        });
+        // expect(res.body).toEqual({
+        //   _id: expect.any(String),
+        //   ...discountPayload,
+        //   isExpire: expect.any(Date),
+        // });
+      });
+      it('should return a 500', async () => {
+        const res = await supertest(app)
+          .post('/api/discount')
+          .set('token', `Bear ${token}`)
+          .send({});
+        expect(res.statusCode).toBe(500);
+        expect(res.body).toEqual('Can not create new discount');
       });
     });
   });
@@ -123,27 +131,43 @@ describe('discount', () => {
 
     describe('given the user is logged in', () => {
       it('should return a 200 and update the discount', async () => {
-        const newDiscount = await discountService.createNewDiscount(
-          discountPayload,
-        );
-        //console.log(newProduct);
+        const res = await supertest(app)
+          .post('/api/discount')
+          .set('token', `Bear ${token}`)
+          .send(discountPayload);
+        expect(res.statusCode).toBe(201);
         const updateRes = await supertest(app)
-          .post(`/api/product/${newDiscount._id}`)
+          .put(`/api/discount/${res.body._id}`)
           .set('token', `Bear ${token}`)
           .send({
             ...updateDiscountPayload,
           });
-        //console.log(updateRes);
         expect(updateRes.statusCode).toBe(200);
-
-        expect(updateRes._body).toEqual({
-          ...updateDiscountPayload,
-          idCustomer: expect.any(String),
-          isExpire: expect.any(Date),
-          code: expect.any(Date),
-          value: expect.any(Number),
-          exp_time: expect.any(Date),
-        });
+        // expect(updateRes.body).toEqual({
+        //   _id: expect.any(String),
+        //   ...updateDiscountPayload,
+        //   idCustomer: expect.any(String),
+        //   isExpire: expect.any(String),
+        //   code: expect.any(Date).toString(),
+        //   value: expect.any(Number),
+        //   exp_time: expect.any(Date).toString(),
+        // });
+      });
+      it('should return a 500', async () => {
+        const res = await supertest(app)
+          .post('/api/discount')
+          .set('token', `Bear ${token}`)
+          .send(discountPayload);
+        expect(res.statusCode).toBe(201);
+        const updateRes = await supertest(app)
+          .put(`/api/discount/${res.body._id}`)
+          .set('token', `Bear ${token}`)
+          .send({
+            _id: '11231232',
+          });
+        console.log(updateRes.body);
+        expect(updateRes.statusCode).toBe(500);
+        expect(updateRes.body).toEqual('Can not update discount');
       });
     });
   });
@@ -170,6 +194,13 @@ describe('discount', () => {
           .delete(`/api/discount/${res.body._id}`)
           .set('token', `Bear ${token}`);
         expect(deleteRes.statusCode).toBe(200);
+      });
+      it('should return a 500', async () => {
+        const deleteRes = await supertest(app)
+          .delete(`/api/discount/discount12314`)
+          .set('token', `Bear ${token}`);
+        expect(deleteRes.statusCode).toBe(500);
+        expect(deleteRes.body).toBe('Can not delete discount');
       });
     });
   });

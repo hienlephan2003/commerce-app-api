@@ -4,10 +4,7 @@ module.exports = {
   getAllDiscounts: () => {
     return new Promise(async (resolve, reject) => {
       try {
-        const discounts = await Discount.find()
-          .limit(10)
-          .sort({ startAt: 1 })
-          .exec();
+        const discounts = await Discount.find().exec();
         resolve(discounts);
       } catch (error) {
         reject(error);
@@ -17,7 +14,7 @@ module.exports = {
   getDiscountById: (discountId) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const discount = await Discount.findById(discountId);
+        const discount = await Discount.findById(discountId).exec();
         resolve(discount);
       } catch (error) {
         reject(error);

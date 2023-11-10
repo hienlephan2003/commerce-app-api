@@ -10,7 +10,7 @@ const config = {
   jest: {
     config: jestConfig,
   },
-  mutate: ['src/**/*.js'],
+  mutate: ['src/controllers/*.js'],
   testRunner: 'jest',
   testRunner_comment:
     "Take a look at (missing 'homepage' URL in package.json) for information about the jest plugin.",

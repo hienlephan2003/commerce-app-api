@@ -90,7 +90,7 @@ describe('auth', () => {
           ).toString(),
           idRole: authValidPayload.idRole,
         });
-
+        console.log(authValidPayload);
         const { statusCode, body } = await supertest(app)
           .post('/api/login')
           .send(authValidPayload);
