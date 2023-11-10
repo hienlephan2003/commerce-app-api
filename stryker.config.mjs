@@ -6,7 +6,7 @@ const config = {
     "This config was generated using 'stryker init'. Please take a look at: https://stryker-mutator.io/docs/stryker-js/configuration/ for more information.",
   packageManager: 'npm',
   reporters: ['html', 'clear-text', 'progress'],
-  // files: ['!./**', '!.stryker-tmp/**', '!node_modules/**', '!coverage/**'],s
+  // files: ['!./**', '!.stryker-tmp/**', '!node_modules/**', '!coverage/**'],
   jest: {
     config: jestConfig,
   },

@@ -8,7 +8,6 @@ module.exports = {
         ? res.status(200).json(discounts)
         : res.status(404).json('Discounts are not found');
     } catch (error) {
-      console.error(error.message);
       return res.status(500).json(error.message);
     }
   },
@@ -20,7 +19,6 @@ module.exports = {
         ? res.status(200).json(discount)
         : res.status(404).json('Discount is not found');
     } catch (error) {
-      console.error(error.message);
       return res.status(500).json(error.message);
     }
   },
@@ -32,7 +30,6 @@ module.exports = {
         ? res.status(201).json(newDiscount)
         : res.status(400).json('Can not create new discount');
     } catch (error) {
-      console.error(error.message);
       return res.status(500).json(error.message);
     }
   },
@@ -48,7 +45,6 @@ module.exports = {
         ? res.status(200).json(newDiscount)
         : res.status(400).json('Can not update new discount');
     } catch (error) {
-      console.error(error.message);
       return res.status(500).json(error.message);
     }
   },
@@ -60,7 +56,6 @@ module.exports = {
         ? res.status(200).json(deletedDiscount)
         : res.status(400).json('Can not delete discount');
     } catch (error) {
-      console.error(error.message);
       return res.status(500).json(error.message);
     }
   },

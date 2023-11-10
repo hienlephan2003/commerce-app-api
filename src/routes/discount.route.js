@@ -5,9 +5,9 @@ const { verifyToken } = require('../middlewares/verifyToken');
 
 router.use(verifyToken);
 router.get('/', discountController.getAllDiscountsController);
-router.get('/:id', discountController.getDiscountByIdController);
+router.get('/:discountId', discountController.getDiscountByIdController);
 router.post('/', discountController.createNewDiscountController);
-router.put('/:id', discountController.updateDiscountController);
-router.delete('/:id', discountController.deleteDiscountController);
+router.put('/:discountId', discountController.updateDiscountController);
+router.delete('/:discountId', discountController.deleteDiscountController);
 
 module.exports = router;
