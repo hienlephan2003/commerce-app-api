@@ -4,14 +4,14 @@ const {
   createNewPayment,
   updatePayment,
 } = require('../services/payment.service');
-exports.createNewOrder = (order) => {
+exports.createNewOrder = (order, userId) => {
   return new Promise(async (resolve, reject) => {
     try {
       if (order.status) delete order.status;
       if (order.discounts) {
         order.discounts = this.checkDiscounts(order.discounts);
       }
-      order.customerId = order.person.id;
+      order.customerId = userId;
       const newOrder = new Order(order);
       await newOrder.populate({
         path: 'items.idProduct',

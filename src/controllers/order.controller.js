@@ -6,7 +6,10 @@ module.exports = {
     try {
       const order = req.body;
       order.person = req.person;
-      const newOrder = await orderService.createNewOrder(order);
+      const newOrder = await orderService.createNewOrder(
+        order,
+        order.person.id,
+      );
       return res.status(200).json(newOrder);
     } catch (e) {
       console.log(e);

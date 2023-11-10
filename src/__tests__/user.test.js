@@ -20,7 +20,7 @@ describe('user', () => {
     await mongoose.connect(mongoServer.getUri());
     user = await createNewPerson(authValidPayload);
     token = createToken(user._id, user.idRole);
-    console.log(token);
+    // console.log(token);
   });
   afterAll(async () => {
     await mongoose.disconnect();
