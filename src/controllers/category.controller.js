@@ -20,10 +20,11 @@ module.exports = {
         req.params.id,
         req.body,
       );
+      if (!updateCategory) throw 'Not found category';
       res.status(200).json(updateCategory);
     } catch (err) {
       console.log(err);
-      res.status(500).json({ message: err.toString() });
+      res.status(500).json(err);
     }
   },
   deleteCategory: async (req, res) => {

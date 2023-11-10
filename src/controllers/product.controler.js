@@ -19,13 +19,13 @@ module.exports = {
       );
       res.status(200).json(updateProduct);
     } catch (err) {
-      console.log('Update' + err);
       res.status(500).json(err);
     }
   },
   deleteProduct: async (req, res) => {
     try {
-      await Product.findByIdAndDelete(req.params.id);
+      const product = await Product.findByIdAndDelete(req.params.id);
+      if (!product) throw 'No product found';
       res.status(200).json('Product successfully deleted');
     } catch (err) {
       res.status(500).json(err);

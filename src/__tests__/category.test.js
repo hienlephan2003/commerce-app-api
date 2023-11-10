@@ -55,6 +55,15 @@ describe('category', () => {
       });
 
       describe('given the user is logged in', () => {
+        it('return 500 status code', async () => {
+          const cateId = new mongoose.Types.ObjectId().toString();
+          const { statusCode, body } = await supertest(app)
+            .delete(`/api/category/${'123'}`)
+            .set('token', `Bear ${adminToken}`);
+          expect(statusCode).toBe(500);
+          expect(body).not.toBeNaN();
+        });
+
         it('should return a 200 and delete the category', async () => {
           const res = await createNewCategory(categoryPayload);
           productPayload.idCategory = res._id;
@@ -70,6 +79,21 @@ describe('category', () => {
             `/api/product/${product._id}`,
           );
           expect(statusCode).toBe(404);
+        });
+        it('not delete product from other categories', async () => {
+          const res = await createNewCategory(categoryPayload);
+          const product = await createNewProduct(productPayload);
+
+          //console.log(res.body);
+          const deleteRes = await supertest(app)
+            .delete(`/api/category/${res._id}`)
+            .set('token', `Bear ${adminToken}`);
+          expect(deleteRes.statusCode).toBe(200);
+          expect(deleteRes.body).not.toBeNaN();
+          const { body, statusCode } = await supertest(app).get(
+            `/api/product/${product._id}`,
+          );
+          expect(statusCode).toBe(200);
         });
       });
     });
@@ -151,6 +175,18 @@ describe('category', () => {
     });
 
     describe('given the user is logged in', () => {
+      describe('invalid category id', () => {
+        it('return 500 status code', async () => {
+          const cateId = new mongoose.Types.ObjectId().toString();
+          const { statusCode, body } = await supertest(app)
+            .put(`/api/category/${cateId}`)
+            .set('token', `Bearer ${adminToken}`)
+            .send(updateCategoryPayload);
+          expect(statusCode).toBe(500);
+          expect(body).not.toBeNaN();
+        });
+      });
+
       it('should return a 200 and update the category', async () => {
         const newCategory = await createNewCategory(categoryPayload);
         const { body, statusCode } = await supertest(app)

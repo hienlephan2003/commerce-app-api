@@ -20,9 +20,11 @@ module.exports = {
       if (Object.keys(req.body).length === 0) {
         throw new Error('Nothing to update');
       }
-      const UpdatePerson = await Person.findByIdAndUpdate(req.person.id, {
-        $set: req.body,
-      });
+      const UpdatePerson = await Person.findByIdAndUpdate(
+        req.person.id,
+        { ...req.body },
+        { new: true },
+      );
       const { password, __v, createdAt, ...others } = UpdatePerson._doc;
 
       res.status(200).json(others);

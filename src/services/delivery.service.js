@@ -23,15 +23,15 @@ exports.changeDeliveryStatus = (deliveryId, status) => {
   return new Promise(async (resolve, reject) => {
     try {
       const delivery = await Delivery.findById(deliveryId);
-      if (delivery.status != status) {
+      if (status && delivery.status != status) {
         delivery.status = status;
-        delivery.save();
-      }
-      if (delivery.status == 'Delivered') {
-        await changeOrderStatus(delivery.orderId, ORDER_STATUS.Paid);
-      }
-      const { __v, createdAt, updatedAt, ...newDeliveryInfo } = delivery._doc;
-      resolve(newDeliveryInfo);
+        await delivery.save();
+        if (delivery.status == 'Delivered') {
+          await changeOrderStatus(delivery.orderId, ORDER_STATUS.Paid);
+        }
+        const { __v, createdAt, updatedAt, ...newDeliveryInfo } = delivery._doc;
+        resolve(newDeliveryInfo);
+      } else reject('Not found status');
     } catch (e) {
       reject(e);
     }

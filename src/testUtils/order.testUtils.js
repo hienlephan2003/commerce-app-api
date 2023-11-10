@@ -1,3 +1,5 @@
+const { default: mongoose } = require('mongoose');
+
 const orderPayload = {
   items: [
     {
@@ -9,6 +11,7 @@ const orderPayload = {
   ],
   discounts: [],
   paymentType: 'Online',
+  receiverInfomation: new mongoose.Types.ObjectId().toString(),
 };
 updateOrderPayload = {};
 module.exports = { orderPayload };

@@ -55,6 +55,14 @@ describe('delivery', () => {
         //console.log(res.body);
         expect(res.statusCode).toBe(200);
       });
+      it('should return a 500', async () => {
+        const res = await supertest(app)
+          .post('/api/delivery')
+          .set('token', `Bear ${adminToken}`)
+          .send({});
+        expect(res.statusCode).toBe(500);
+        expect(res.body).not.toBeNaN();
+      });
     });
   });
 
@@ -82,6 +90,15 @@ describe('delivery', () => {
     });
 
     describe('given the delivery does exist', () => {
+      it('should return a 500', async () => {
+        const res = await supertest(app)
+          .get(`/api/delivery/${'123'}`)
+          .set('token', `Bear ${token}`);
+
+        expect(res.statusCode).toBe(500);
+        expect(res.body).not.toBeNaN();
+      });
+
       it('should return a 200 status and the delivery', async () => {
         const delivery = await createNewDelivery(deliveryPayload);
 
@@ -117,6 +134,17 @@ describe('delivery', () => {
     });
 
     describe('given the user is logged in', () => {
+      it('should return a 500', async () => {
+        const newDelivery = await createNewDelivery(deliveryPayload);
+        const res = await supertest(app)
+          .put(`/api/delivery/${newDelivery._id}`)
+          .set('token', `Bear ${adminToken}`)
+          .send({});
+        console.log(res.body);
+        expect(res.statusCode).toBe(500);
+        expect(res.body).not.toBeNaN();
+      });
+
       it('should return a 200 and update the delivery', async () => {
         const newDelivery = await createNewDelivery(deliveryPayload);
         //console.log(newDelivery);

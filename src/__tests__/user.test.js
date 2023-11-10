@@ -40,14 +40,6 @@ describe('user', () => {
       });
     });
     describe('given the user is logged in', () => {
-      it('should return success and 200', async () => {
-        const { statusCode, body } = await supertest(app)
-          .post('/api/user')
-          .set('token', `Bear ${token}`)
-          .send(validEditUserPayload);
-        expect(statusCode).toBe(200);
-        // expect(body.password).notEqual()
-      });
       it('should return a 500', async () => {
         const res = await supertest(app)
           .post('/api/user')
@@ -55,6 +47,32 @@ describe('user', () => {
           .send({});
         expect(res.statusCode).toBe(500);
         expect(res.body).not.toBeNaN();
+      });
+
+      it('should return success and 200', async () => {
+        const { statusCode, body } = await supertest(app)
+          .post('/api/user')
+          .set('token', `Bear ${token}`)
+          .send(validEditUserPayload);
+        expect(statusCode).toBe(200);
+        console.log(body);
+        expect(body.cmnd_passport).toEqual(validEditUserPayload.cmnd_passport);
+        expect(body.password).not.toEqual(validEditUserPayload.password);
+
+        // expect(body.password).notEqual()
+      });
+      it('should return success and 200', async () => {
+        const { statusCode, body } = await supertest(app)
+          .post('/api/user')
+          .set('token', `Bear ${token}`)
+          .send({
+            ...validEditUserPayload,
+            cmnd_passport: 'cannotchange',
+            idRole: 2,
+          });
+        expect(statusCode).toBe(200);
+        expect(body.cmnd_passport).toEqual(validEditUserPayload.cmnd_passport);
+        expect(body.idRole).toEqual(1);
       });
     });
     it('should return a 500', async () => {

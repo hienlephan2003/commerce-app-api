@@ -73,6 +73,8 @@ exports.changeOrderStatus = (orderId, status) => {
         { status: status },
         { new: true },
       );
+      // console.log(updateOrder);
+      if (!updateOrder) throw 'Not found order';
       resolve(updateOrder);
     } catch (e) {
       reject(e);

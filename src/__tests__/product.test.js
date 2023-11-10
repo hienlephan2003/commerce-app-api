@@ -57,6 +57,19 @@ describe('product', () => {
     });
 
     describe('given the user is logged in', () => {
+      describe('invalid product id', () => {
+        it('return 500 status code', async () => {
+          let invalidProductPayload = { ...productPayload };
+          delete invalidProductPayload.idCategory;
+          const { statusCode, body } = await supertest(app)
+            .post('/api/product')
+            .set('token', `Bear ${token}`)
+            .send(invalidProductPayload);
+          expect(statusCode).toBe(500);
+          expect(body).not.toBeNaN();
+        });
+      });
+
       it('should return a 200 and create the product', async () => {
         const res = await supertest(app)
           .post('/api/product')
@@ -105,6 +118,18 @@ describe('product', () => {
           rates: expect.any(Array),
         });
       });
+      it('return 500 status code', async () => {
+        let invalidProductPayload = { ...productPayload };
+        delete invalidProductPayload.idCategory;
+        const { statusCode, body } = await supertest(app)
+          .post(`/api/product/${'123'}`)
+          .set('token', `Bear ${token}`)
+          .send({
+            ...updateProductPayload,
+          });
+        expect(statusCode).toBe(500);
+        expect(body).not.toBeNaN();
+      });
     });
   });
   describe('delete product route', () => {
@@ -131,6 +156,13 @@ describe('product', () => {
           .delete(`/api/product/${res.body._id}`)
           .set('token', `Bear ${token}`);
         expect(deleteRes.statusCode).toBe(200);
+      });
+      it('return 500 status code', async () => {
+        const { statusCode, body } = await supertest(app)
+          .delete(`/api/product/123`)
+          .set('token', `Bear ${token}`);
+        expect(statusCode).toBe(500);
+        expect(body).not.toBeNaN();
       });
     });
   });

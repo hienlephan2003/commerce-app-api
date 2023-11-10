@@ -35,10 +35,15 @@ const OrderSchema = new mongoose.Schema(
     receiverInfomation: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'ReceiverInfomation',
+      required: true,
     },
   },
   { timestamps: true, toJSON: { virtuals: true } },
 );
+OrderSchema.path('items').validate(function (value) {
+  return value.length > 0;
+}, 'Items must not be empty');
+
 OrderSchema.virtual('totalCost').get(function () {
   return (
     this.items.reduce((total, product) => {

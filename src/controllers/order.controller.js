@@ -26,7 +26,6 @@ module.exports = {
       );
       return res.status(200).json(updateOrder);
     } catch (err) {
-      console.log('Update' + err);
       return res.status(500).json(err);
     }
   },
@@ -58,7 +57,7 @@ module.exports = {
   getOrderByUserId: async (req, res) => {
     try {
       const orders = await Order.find({ customerId: req.person.id });
-      if (!orders) {
+      if (!orders || orders.length == 0) {
         return res.status(404).json('order not found');
       } else return res.status(200).json(orders);
     } catch (err) {

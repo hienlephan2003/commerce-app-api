@@ -7,7 +7,6 @@ module.exports = {
       const newDelivery = await deliveryService.createNewDelivery(req.body);
       return res.status(200).json(newDelivery);
     } catch (e) {
-      console.log(e);
       return res.status(500).json(e);
     }
   },
@@ -25,7 +24,7 @@ module.exports = {
     try {
       const canceledDelivery = await deliveryService.changeDeliveryStatus(
         req.params.id,
-        req.body.status ? req.body.status : '',
+        req.body.status,
       );
       return res.status(200).json(canceledDelivery);
     } catch (err) {
