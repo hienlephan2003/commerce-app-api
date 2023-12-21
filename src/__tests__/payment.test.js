@@ -23,9 +23,9 @@ describe('payment', () => {
   let newOrder;
   let product;
   let newOrderPayload;
-
+  let mongoServer;
   beforeAll(async () => {
-    const mongoServer = await MongoMemoryServer.create();
+    mongoServer = await MongoMemoryServer.create();
     await mongoose.connect(mongoServer.getUri());
     newOrderPayload = orderPayload;
     newOrderPayload.items = [];
@@ -35,6 +35,7 @@ describe('payment', () => {
   });
   afterAll(async () => {
     await mongoose.disconnect();
+    await mongoServer.stop();
     await mongoose.connection.close();
   });
   describe('create payment transaction', () => {

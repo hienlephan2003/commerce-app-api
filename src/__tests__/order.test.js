@@ -22,8 +22,9 @@ describe('order', () => {
   let newOrder;
   let product;
   let newOrderPayload;
+  let mongoServer;
   beforeAll(async () => {
-    const mongoServer = await MongoMemoryServer.create();
+    mongoServer = await MongoMemoryServer.create();
     await mongoose.connect(mongoServer.getUri());
     newOrderPayload = orderPayload;
     newOrderPayload.items = [];
@@ -33,6 +34,7 @@ describe('order', () => {
   });
   afterAll(async () => {
     await mongoose.disconnect();
+    await mongoServer.stop();
     await mongoose.connection.close();
   });
   describe('create order route', () => {
