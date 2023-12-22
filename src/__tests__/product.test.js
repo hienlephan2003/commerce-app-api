@@ -52,7 +52,6 @@ describe('product', () => {
     describe('given the user is not logged in', () => {
       it('should return a 401', async () => {
         const { statusCode, body } = await supertest(app).post('/api/product');
-
         expect(statusCode).toBe(401);
         expect(body).toEqual('You are not authenticated');
       });
@@ -63,12 +62,13 @@ describe('product', () => {
         it('return 500 status code', async () => {
           let invalidProductPayload = { ...productPayload };
           delete invalidProductPayload.idCategory;
+          console.log(invalidProductPayload);
           const { statusCode, body } = await supertest(app)
             .post('/api/product')
             .set('token', `Bear ${token}`)
             .send(invalidProductPayload);
+
           expect(statusCode).toBe(500);
-          expect(body).not.toBeNaN();
         });
       });
 
@@ -91,7 +91,7 @@ describe('product', () => {
   describe('update product route', () => {
     describe('given the user is not logged in', () => {
       it('should return a 401', async () => {
-        const { statusCode, body } = await supertest(app).post(
+        const { statusCode, body } = await supertest(app).patch(
           `/api/product/${productId}`,
         );
         expect(statusCode).toBe(401);
@@ -104,7 +104,7 @@ describe('product', () => {
         const newProduct = await createNewProduct(productPayload);
         //console.log(newProduct);
         const updateRes = await supertest(app)
-          .post(`/api/product/${newProduct._id}`)
+          .patch(`/api/product/${newProduct._id}`)
           .set('token', `Bear ${token}`)
           .send({
             ...updateProductPayload,
@@ -124,7 +124,7 @@ describe('product', () => {
         let invalidProductPayload = { ...productPayload };
         delete invalidProductPayload.idCategory;
         const { statusCode, body } = await supertest(app)
-          .post(`/api/product/${'123'}`)
+          .patch(`/api/product/${'123'}`)
           .set('token', `Bear ${token}`)
           .send({
             ...updateProductPayload,

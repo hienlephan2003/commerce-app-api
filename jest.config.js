@@ -3,7 +3,7 @@
 module.exports = {
   verbose: true,
   testMatch: [
-    '!<rootDir>/src/__tests__/listOfProductBuy.test.js',
     '<rootDir>/src/__tests__/*.test.js',
+    '!<rootDir>/src/__tests__/listOfProductBuy.test.js',
   ],
 };

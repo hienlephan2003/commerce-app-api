@@ -16,10 +16,8 @@ exports.createNewOrder = (order, userId) => {
       await newOrder.populate({
         path: 'items.idProduct',
       });
-      console.log(newOrder.totalCost);
       const saveOrder = await newOrder.save();
       const { createdAt, updatedAt, ...newOrderInfo } = newOrder._doc;
-      console.log(newOrderInfo.totalCost);
       const paymentPayload = {
         orderId: newOrderInfo._id,
         amount: newOrder.totalCost,
@@ -73,7 +71,6 @@ exports.changeOrderStatus = (orderId, status) => {
         { status: status },
         { new: true },
       );
-      // console.log(updateOrder);
       if (!updateOrder) throw 'Not found order';
       resolve(updateOrder);
     } catch (e) {

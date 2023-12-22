@@ -14,8 +14,6 @@ exports.createNewProduct = (product) => {
 exports.updateProduct = (productId, product) => {
   return new Promise(async (resolve, reject) => {
     try {
-      // console.log(productId);
-      // console.log(product);
       await Product.findByIdAndUpdate(productId, product);
       const updateProduct = await Product.findById(productId);
       resolve(updateProduct);

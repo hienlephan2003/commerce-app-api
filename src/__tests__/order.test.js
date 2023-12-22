@@ -43,7 +43,6 @@ describe('order', () => {
         const { statusCode, body } = await supertest(app)
           .post('/api/order')
           .send(newOrderPayload);
-
         expect(statusCode).toBe(401);
         expect(body).toEqual('You are not authenticated');
       });
@@ -74,11 +73,11 @@ describe('order', () => {
   describe('get order route', () => {
     describe('given the order does not exist', () => {
       it('should return 500 status code', async () => {
-        const orderId = 'order-123';
-        await supertest(app)
+        const orderId = 12345678910;
+        const { body, statusCode } = await supertest(app)
           .get(`/api/order/${orderId}`)
-          .set('token', `Bear ${token}`)
-          .expect(500);
+          .set('token', `Bear ${token}`);
+        expect(statusCode).toBe(500);
       });
     });
     describe('given the order does not exist', () => {
@@ -115,7 +114,7 @@ describe('order', () => {
       });
       describe('given the user is logged in', () => {
         it('should return a 200 and canceled the order', async () => {
-          //console.log(newOrder);
+          console.log('New Order: ' + newOrder);
           const updateRes = await supertest(app)
             .post(`/api/order/canceled/${newOrder._id}`)
             .set('token', `Bear ${token}`);

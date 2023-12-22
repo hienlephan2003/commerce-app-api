@@ -49,6 +49,7 @@ describe('payment', () => {
 
     describe('given the user is logged in', () => {
       it('should return a 200 and create the payment', async () => {
+        console.log(newOrder._id);
         const res = await supertest(app)
           .post('/api/payment')
           .set('token', `Bear ${token}`)
