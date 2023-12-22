@@ -18,12 +18,14 @@ const {
 } = require('../testUtils/discount.testUtils');
 
 describe('discount', () => {
+  let mongoServer;
   beforeAll(async () => {
-    const mongoServer = await MongoMemoryServer.create();
+    mongoServer = await MongoMemoryServer.create();
     await mongoose.connect(mongoServer.getUri());
   });
   afterAll(async () => {
     await mongoose.disconnect();
+    await mongoServer.stop();
     await mongoose.connection.close();
   });
   describe('Get All Discounts', () => {

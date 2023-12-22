@@ -7,6 +7,7 @@ module.exports = {
       const payment = {
         orderId: req.body.orderId,
       };
+      console.log(payment);
       if (!payment.orderId) throw 'Missing order id';
       const newPayment = await paymentService.updatePayment(payment.orderId, {
         status: PAYMENT_STATUS.Success,

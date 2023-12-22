@@ -17,12 +17,14 @@ const {
   deliveryChangeStatus,
 } = require('../testUtils/delivery.testUtils');
 describe('delivery', () => {
+  let mongoServer;
   beforeAll(async () => {
-    const mongoServer = await MongoMemoryServer.create();
+    mongoServer = await MongoMemoryServer.create();
     await mongoose.connect(mongoServer.getUri());
   });
   afterAll(async () => {
     await mongoose.disconnect();
+    await mongoServer.stop();
     await mongoose.connection.close();
   });
   describe('create delivery route', () => {

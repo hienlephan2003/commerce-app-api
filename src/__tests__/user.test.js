@@ -19,8 +19,9 @@ const { createNewPerson } = require('../services/auth.service.js');
 describe('user', () => {
   let user;
   let token;
+  let mongoServer;
   beforeAll(async () => {
-    const mongoServer = await MongoMemoryServer.create();
+    mongoServer = await MongoMemoryServer.create();
     await mongoose.connect(mongoServer.getUri());
     user = await createNewPerson(authValidPayload);
     token = createToken(user._id, user.idRole);
@@ -28,6 +29,7 @@ describe('user', () => {
   });
   afterAll(async () => {
     await mongoose.disconnect();
+    await mongoServer.stop();
     await mongoose.connection.close();
   });
   describe('edit profile', () => {

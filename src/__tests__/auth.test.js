@@ -11,12 +11,14 @@ const {
   authValidPayload,
 } = require('../testUtils/auth.testUtils.js');
 describe('auth', () => {
+  let mongoServer;
   beforeAll(async () => {
-    const mongoServer = await MongoMemoryServer.create();
+    mongoServer = await MongoMemoryServer.create();
     await mongoose.connect(mongoServer.getUri());
   });
   afterAll(async () => {
     await mongoose.disconnect();
+    await mongoServer.stop();
     await mongoose.connection.close();
   });
   describe('register route', () => {

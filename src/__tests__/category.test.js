@@ -13,12 +13,14 @@ const {
 const { productPayload } = require('../testUtils/product.testUtils');
 const { token, adminToken } = require('../testUtils/auth.testUtils');
 describe('category', () => {
+  let mongoServer;
   beforeAll(async () => {
-    const mongoServer = await MongoMemoryServer.create();
+    mongoServer = await MongoMemoryServer.create();
     await mongoose.connect(mongoServer.getUri());
   });
   afterAll(async () => {
     await mongoose.disconnect();
+    await mongoServer.stop();
     await mongoose.connection.close();
   });
   describe('get category route', () => {

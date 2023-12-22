@@ -1,5 +1,7 @@
+const mongoose = require('mongoose');
+
 paymentTransactionPayload = {
-  orderId: '123',
+  orderId: new mongoose.Types.ObjectId().toString(),
 };
 
 module.exports = { paymentTransactionPayload };

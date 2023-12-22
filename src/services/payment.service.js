@@ -2,7 +2,6 @@ const Payment = require('../models/Payment');
 exports.createNewPayment = (payment) => {
   return new Promise(async (resolve, reject) => {
     try {
-      console.log(payment);
       const newPayment = new Payment(payment);
       const savePayment = await newPayment.save();
       const { __v, createdAt, updatedAt, ...newPaymentInfo } = savePayment._doc;

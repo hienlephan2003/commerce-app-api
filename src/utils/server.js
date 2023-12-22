@@ -9,6 +9,7 @@ const orderRouter = require('../routes/order.route');
 const deliveryRouter = require('../routes/delivery.route');
 const paymentRouter = require('../routes/payment.route');
 const userRouter = require('../routes/user.route');
+const listOfProductBuyRouter = require('../routes/listOfProductsBuy.route');
 const dotenv = require('dotenv');
 
 const createApp = () => {
@@ -25,6 +26,7 @@ const createApp = () => {
   app.use('/api/order', orderRouter);
   app.use('/api/payment', paymentRouter);
   app.use('/api/delivery', deliveryRouter);
+  app.use('/api/listOfProductBuy', listOfProductBuyRouter);
 
   return app;
 };
