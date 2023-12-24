@@ -19,5 +19,4 @@ jobs:
       - run: npm run lint --if-present
       - run: npm test
       - run: npm run stryker
-      - run: npm run removetmp
       - run: npm run build --if-present
