@@ -12,10 +12,8 @@ const config = {
   },
   mutate: [
     'src/controllers/*.js',
-    '!src/services/order.service.js',
     '!src/services/listOfProductBuy.service.js',
     '!src/controllers/listOfProductBuy.controller.js',
-    '!src/controllers/order.controller.js',
   ],
   testRunner: 'jest',
   testRunner_comment:
