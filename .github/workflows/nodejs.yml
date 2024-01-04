@@ -10,7 +10,7 @@ jobs:
         node-version: [16, 18, 20]
 
     env:
-      PORT: 5001
+      PORT: 64679
       MONGO_URL: 'mongodb+srv://commercedb:commercedb@cluster0.llnc9p0.mongodb.net/'
       SECRET: 'commerapp'
       JWT_SEC: 'commerapp'
@@ -84,7 +84,7 @@ jobs:
         node-version: [16, 18, 20]
 
     env:
-      PORT: 5001
+      PORT: 55295
       MONGO_URL: 'mongodb+srv://commercedb:commercedb@cluster0.llnc9p0.mongodb.net/'
       SECRET: 'commerapp'
       JWT_SEC: 'commerapp'
