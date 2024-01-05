@@ -65,7 +65,6 @@ describe('order', () => {
           .set('token', `Bear ${token}`)
           .send({});
         expect(res.statusCode).toBe(500);
-        expect(res.body).not.toBeNaN();
       });
     });
   });

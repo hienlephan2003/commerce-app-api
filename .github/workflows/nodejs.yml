@@ -3,8 +3,48 @@ name: Node.js CI
 on: [push]
 
 jobs:
-  build:
+  build-ubuntu:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16, 18, 20]
+
+    env:
+      PORT: 64679
+      MONGO_URL: 'mongodb+srv://commercedb:commercedb@cluster0.llnc9p0.mongodb.net/'
+      SECRET: 'commerapp'
+      JWT_SEC: 'commerapp'
+      CI: true
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm ci --no-audit
+
+      - name: Run lint
+        run: npm run lint --if-present
+
+      - name: Run tests
+        run: npm test
+
+      - name: Run stryker
+        run: npm run stryker
+
+      - name: Build (if present)
+        run: npm run build --if-present
+
+  build-macos:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        node-version: [16, 18, 20]
 
     env:
       PORT: 5001
@@ -12,11 +52,64 @@ jobs:
       SECRET: 'commerapp'
       JWT_SEC: 'commerapp'
       CI: true
+
     steps:
-      - uses: actions/checkout@v2
-      - uses: volta-cli/action@v1
-      - run: npm ci --no-audit
-      - run: npm run lint --if-present
-      - run: npm test
-      - run: npm run stryker
-      - run: npm run build --if-present
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm ci --no-audit
+
+      - name: Run lint
+        run: npm run lint --if-present
+
+      - name: Run tests
+        run: npm test
+
+      - name: Run stryker
+        run: npm run stryker
+
+      - name: Build (if present)
+        run: npm run build --if-present
+
+  build-windows:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        node-version: [16, 18, 20]
+
+    env:
+      PORT: 55295
+      MONGO_URL: 'mongodb+srv://commercedb:commercedb@cluster0.llnc9p0.mongodb.net/'
+      SECRET: 'commerapp'
+      JWT_SEC: 'commerapp'
+      CI: true
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm ci --no-audit
+
+      - name: Run lint
+        run: npm run lint --if-present
+
+      - name: Run tests
+        run: npm test
+
+      - name: Run stryker
+        run: npm run stryker
+
+      - name: Build (if present)
+        run: npm run build --if-present
